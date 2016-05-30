@@ -1,0 +1,59 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+body {
+    background-color: black;
+    color: white;
+    overflow: hidden;
+}
+
+#debug {
+    display: block;
+}
+
+#timeline {
+  position: fixed;
+  bottom: 0px;
+  height: 10px;
+  background-color: red;
+}
+
+#animation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease-in-out;
+  box-sizing: border-box;
+  border: 1px solid white;
+}
+
+#flasher {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    color: black;
+    text-shadow: 1px 1px 0 white,
+                 1px -1px 0 white,
+                -1px -1px 0 white,
+                -1px 1px 0 white;
+    transition: opacity 0.15s ease-out;
+    opacity: 0;
+    margin: 120px auto;
+    font-size: 90px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10%;
+}
+
+.scene-container {
+  display: none;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: 10px;
+}
