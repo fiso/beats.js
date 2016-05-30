@@ -170,7 +170,9 @@ Beats.prototype.getTimeToNearestBeat = function() {
   }
 };
 
-Beats.prototype.addLyricsCallback = function (beat, lyrics, callback)
+Beats.prototype.addLyricsCallback = function (beat, lyrics, callback) {
+
+};
 
 Beats.prototype.addEveryBeatCallback = function(callback) {
   this.everyBeatCallbacks.push(callback);
