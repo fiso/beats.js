@@ -53,11 +53,22 @@
 
     <script>
         var strobeInterval = -1;
+        function togglePlayback () {
+          if (window.beats.track.paused) {
+              window.beats.track.play();
+          } else {
+              window.beats.track.pause();
+          }
+        }
 
         $(document).ready(function() {
             var element = document.getElementById("animation-container");
             element.style["width"] = window.innerWidth + "px";
             element.style["height"] = window.innerHeight + "px";
+
+            document.addEventListener("click", function(event) {
+              togglePlayback();
+            });
 
             window.beats = new Beats("/audio/track.mp3", 0.2);
             //window.beats = new Beats("/audio/track2.mp3", 13.4, 150);
@@ -180,11 +191,7 @@
                         case 32: // Space
                             //window.beats.track.currentTime = 150; // Temp
                             //window.beats.track.playbackRate = 0.5;
-                            if (window.beats.track.paused) {
-                                window.beats.track.play();
-                            } else {
-                                window.beats.track.pause();
-                            }
+                            togglePlayback();
                             break;
                         case 81: // Q
                             window.beats.track.currentTime = window.beats.offset;
