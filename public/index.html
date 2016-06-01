@@ -23,6 +23,9 @@
         <div id="flasher">
         </div>
 
+        <div id="lyrics-container">
+        </div>
+
         <div id="scene-1" class="scene-container">
         </div>
 
@@ -102,27 +105,38 @@
                 element.style["display"] = "inline-block";
             });
 
-            /*
-            window.beats.addLyricsCallback(320, "||Hey.ba.by", function(text) {
-                var element = document.getElementById("animation-container");
-                element.innerHTML += text;
+            var verseLyrics = "#### (Hey¤ ba¤by?)¤ What's# crac¤kin'?¤ Who¤ ya¤ mac¤kin'?¤ What¤%cha¤ do¤in'?¤" +
+                              " Who¤ ya¤ screw¤in'?¤% What¤cha¤ drink¤in?¤ What¤cha¤ think¤in'?" +
+                              "###¤ (Hey¤ ba¤by!)¤ Say¤ my¤ name#% Play¤ your¤ game# Wan¤na¤ do¤ me?" +
+                              "¤% Wan¤na¤ screw¤ me?¤ I'm¤ your¤ pet#% Make¤ me¤ wet" +
+                              "###¤% (Hey,¤ ba¤by?)¤ Don't¤ ya¤ stare# I¤ don't¤% care#% Want¤ some¤ fun?" +
+                              "# Make¤ me¤ cum# Keep¤ it¤ go¤in'¤% Cause% it's¤% snow¤in'" +
+                              "###% (Hey,¤ ba¤by?!)¤ Tie¤ me¤ up#% Pin¤ me¤ down#% Flip¤ me¤ o¤ver¤" +
+                              " Up¤side¤ down#% Make¤ me¤ make¤ that¤ fuck¤in'¤ sound";
+
+            window.beats.addLyricsCallback(318,
+                verseLyrics + verseLyrics + verseLyrics,
+                function(text) {
+                    var element = document.getElementById("lyrics-container");
+                    element.innerHTML += text;
             });
-            // What's crackin'?Who ya mackin'?Whatcha doin'?Who ya screwin'?Whatcha drinkin?Whatcha thinkin'?
-            */
 
             window.beats.addBeatCallback(320, function() {
                 var element = document.getElementById("scene-6");
                 element.style["display"] = "inline-block";
             });
 
-            window.beats.addBeatCallback(376, function() {
+            var upsideDown = function() {
                 var element = document.getElementById("animation-container");
                 element.style["transitionDuration"] = window.beats.getTimePerBeat() + "s";
                 element.style["transform"] = "rotate(180deg)";
                 setTimeout(function() {
                     element.style["transform"] = "rotate(0deg)";
                 }, window.beats.getTimePerBeat() * 1000);
-            });
+            };
+
+            window.beats.addBeatCallback(376, upsideDown);
+            window.beats.addBeatCallback(440, upsideDown);
 
             window.beats.addBeatCallback(448, function() {
                 var element = document.getElementById("scene-7");
@@ -160,6 +174,8 @@
                 // console.log(event.keyCode);
                 switch (event.keyCode) {
                     case 32: // Space
+                        //window.beats.track.currentTime = 150; // Temp
+                        //window.beats.track.playbackRate = 0.5;
                         if (window.beats.track.paused) {
                             window.beats.track.play();
                         } else {
@@ -181,6 +197,12 @@
                         break;
                     case 37: // Left
                         window.beats.track.currentTime -= 10;
+                        break;
+                    case 38: // Up
+                        window.beats.track.playbackRate += 0.05;
+                        break;
+                    case 40: // Down
+                    window.beats.track.playbackRate -= 0.05;
                         break;
                     default:
                         break;

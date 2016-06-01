@@ -3,10 +3,12 @@ function Beats(audioUrl, offsetSeconds, bpm) {
   this.bpm = bpm || this.analyzeBpm(audioUrl);
   this.offset = offsetSeconds || 0;
   this.lastBeat = -1;
+  this.lastFractionalBeat = -1;
   this.everyBeatCallbacks = [];
   this.oneshotCallbacks = {};
   this.beatCallbacks = {};
-  setInterval(this._audioPoll.bind(this), 10);
+  this.fractionalBeatCallbacks = [];
+  window.requestAnimationFrame(this._audioPoll.bind(this));
 };
 
 // Function to identify peaks
@@ -146,6 +148,19 @@ Beats.prototype._audioPoll = function() {
 
     this.lastBeat = currentBeat;
   }
+
+  var currentFractionalBeat = this.getCurrentBeatFloat();
+  while (this.fractionalBeatCallbacks.length > 0) {
+      if (currentFractionalBeat < this.fractionalBeatCallbacks[0].beat) {
+          break;
+      }
+
+      var callback = this.fractionalBeatCallbacks.shift();
+      callback.callback(callback.data);
+  }
+  this.lastFractionalBeat = currentFractionalBeat;
+
+  window.requestAnimationFrame(this._audioPoll.bind(this));
 };
 
 Beats.prototype.getCurrentBeatFloat = function() {
@@ -171,11 +186,42 @@ Beats.prototype.getTimeToNearestBeat = function() {
 };
 
 Beats.prototype.addLyricsCallback = function (beat, lyrics, callback) {
+    beat -= 1;
+    lyrics = "#" + lyrics;
+    var tokens = "#¤%";
+    var tokenized = lyrics.split(/([\#\¤\%])/).slice(1);
+    var intervals = {};
+    var fraction = 4;
+    var i;
+    for (i = 0; i < tokens.length; i++) {
+        var token = tokens.charAt(i);
+        intervals[token] = (8 / fraction) * this.getTimePerBeat();
+        fraction *= 2;
+    }
 
+    for (i = 0; i < tokenized.length; i += 2) {
+        var token = tokenized[i];
+        var lyric = tokenized[i + 1];
+        if (!intervals[token]) {
+            debugger;
+        }
+
+        beat += intervals[token];
+
+        if (lyric) {
+            this.addFractionalBeatCallback(beat, function (data) {
+                callback(data);
+            }, lyric);
+        }
+    }
 };
 
 Beats.prototype.addEveryBeatCallback = function(callback) {
   this.everyBeatCallbacks.push(callback);
+};
+
+Beats.prototype.addFractionalBeatCallback = function(beatNumber, callback, data) {
+  this.fractionalBeatCallbacks.push({beat: beatNumber, callback: callback, data: data});
 };
 
 Beats.prototype.addBeatCallback = function(beatNumber, callback) {
