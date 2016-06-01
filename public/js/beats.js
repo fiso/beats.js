@@ -1,6 +1,6 @@
 function Beats(audioUrl, offsetSeconds, bpm) {
   this.track = new Audio(audioUrl);
-  this.bpm = bpm || this.analyzeBpm(audioUrl);
+  this.bpm = bpm;
   this.offset = offsetSeconds || 0;
   this.lastBeat = -1;
   this.lastFractionalBeat = -1;
@@ -9,7 +9,18 @@ function Beats(audioUrl, offsetSeconds, bpm) {
   this.beatCallbacks = {};
   this.fractionalBeatCallbacks = [];
   window.requestAnimationFrame(this._audioPoll.bind(this));
+  this._promise = new Promise(function(resolve, reject) {
+    if (!bpm) {
+      this.analyzeBpm(audioUrl, resolve);
+    } else {
+      resolve();
+    }
+  }.bind(this));
 };
+
+Beats.prototype.ready = function() {
+  return this._promise;
+}
 
 // Function to identify peaks
 function getPeaksAtThreshold(data, threshold) {
@@ -75,7 +86,7 @@ function groupNeighborsByTempo(intervalCounts, sampleRate) {
   return tempoCounts;
 }
 
-Beats.prototype.analyzeBpm = function(audioUrl) {
+Beats.prototype.analyzeBpm = function(audioUrl, onComplete) {
   var context = new(window.AudioContext || window.webkitAudioContext)();
   var request = new XMLHttpRequest();
   request.open('GET', audioUrl, true);
@@ -121,12 +132,20 @@ Beats.prototype.analyzeBpm = function(audioUrl) {
       }).splice(0, 5);
 
       console.log("Best guess: " + top[0].tempo + " BPM");
-    });
-  };
+      this.bpm = top[0].tempo;
+      onComplete();
+    }.bind(this));
+  }.bind(this);
   request.send();
 };
 
 Beats.prototype._audioPoll = function() {
+  window.requestAnimationFrame(this._audioPoll.bind(this));
+  
+  if (this.track.readyState !== 4) {
+      return;
+  }
+
   var currentBeat = this.getCurrentBeat();
   if (this.lastBeat !== currentBeat) {
     this.everyBeatCallbacks.forEach(function(callback) {
@@ -151,16 +170,14 @@ Beats.prototype._audioPoll = function() {
 
   var currentFractionalBeat = this.getCurrentBeatFloat();
   while (this.fractionalBeatCallbacks.length > 0) {
-      if (currentFractionalBeat < this.fractionalBeatCallbacks[0].beat) {
-          break;
-      }
+    if (currentFractionalBeat < this.fractionalBeatCallbacks[0].beat) {
+      break;
+    }
 
-      var callback = this.fractionalBeatCallbacks.shift();
-      callback.callback(callback.data);
+    var callback = this.fractionalBeatCallbacks.shift();
+    callback.callback(callback.data);
   }
   this.lastFractionalBeat = currentFractionalBeat;
-
-  window.requestAnimationFrame(this._audioPoll.bind(this));
 };
 
 Beats.prototype.getCurrentBeatFloat = function() {
@@ -185,35 +202,35 @@ Beats.prototype.getTimeToNearestBeat = function() {
   }
 };
 
-Beats.prototype.addLyricsCallback = function (beat, lyrics, callback) {
-    beat -= 1;
-    lyrics = "#" + lyrics;
-    var tokens = "#¤%";
-    var tokenized = lyrics.split(/([\#\¤\%])/).slice(1);
-    var intervals = {};
-    var fraction = 4;
-    var i;
-    for (i = 0; i < tokens.length; i++) {
-        var token = tokens.charAt(i);
-        intervals[token] = (8 / fraction) * this.getTimePerBeat();
-        fraction *= 2;
+Beats.prototype.addLyricsCallback = function(beat, lyrics, callback) {
+  beat -= 1;
+  lyrics = "#" + lyrics;
+  var tokens = "#¤%";
+  var tokenized = lyrics.split(/([\#\¤\%])/).slice(1);
+  var intervals = {};
+  var fraction = 4;
+  var i;
+  for (i = 0; i < tokens.length; i++) {
+    var token = tokens.charAt(i);
+    intervals[token] = (8 / fraction) * this.getTimePerBeat();
+    fraction *= 2;
+  }
+
+  for (i = 0; i < tokenized.length; i += 2) {
+    var token = tokenized[i];
+    var lyric = tokenized[i + 1];
+    if (!intervals[token]) {
+      debugger;
     }
 
-    for (i = 0; i < tokenized.length; i += 2) {
-        var token = tokenized[i];
-        var lyric = tokenized[i + 1];
-        if (!intervals[token]) {
-            debugger;
-        }
+    beat += intervals[token];
 
-        beat += intervals[token];
-
-        if (lyric) {
-            this.addFractionalBeatCallback(beat, function (data) {
-                callback(data);
-            }, lyric);
-        }
+    if (lyric) {
+      this.addFractionalBeatCallback(beat, function(data) {
+        callback(data);
+      }, lyric);
     }
+  }
 };
 
 Beats.prototype.addEveryBeatCallback = function(callback) {
@@ -221,7 +238,11 @@ Beats.prototype.addEveryBeatCallback = function(callback) {
 };
 
 Beats.prototype.addFractionalBeatCallback = function(beatNumber, callback, data) {
-  this.fractionalBeatCallbacks.push({beat: beatNumber, callback: callback, data: data});
+  this.fractionalBeatCallbacks.push({
+    beat: beatNumber,
+    callback: callback,
+    data: data
+  });
 };
 
 Beats.prototype.addBeatCallback = function(beatNumber, callback) {
