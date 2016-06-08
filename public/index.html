@@ -53,12 +53,13 @@
 
     <script>
         var strobeInterval = -1;
-        function togglePlayback () {
-          if (window.beats.track.paused) {
-              window.beats.track.play();
-          } else {
-              window.beats.track.pause();
-          }
+
+        function togglePlayback() {
+            if (window.beats.track.paused) {
+                window.beats.track.play();
+            } else {
+                window.beats.track.pause();
+            }
         }
 
         $(document).ready(function() {
@@ -67,13 +68,13 @@
             element.style["height"] = window.innerHeight + "px";
 
             document.addEventListener("click", function(event) {
-              togglePlayback();
+                togglePlayback();
             });
 
             window.beats = new Beats("/audio/track.mp3", 0.2);
             //window.beats = new Beats("/audio/track2.mp3", 13.4, 150);
 
-            beats.ready().then(function () {
+            beats.ready().then(function() {
                 setInterval(function() {
                     var element = document.getElementById("timeline");
                     var position = beats.track.currentTime / beats.track.duration;
@@ -121,20 +122,20 @@
                 });
 
                 var verseLyrics = "#### (Hey¤ ba¤by?)¤ What's# crac¤kin'?¤ Who¤ ya¤ mac¤kin'?¤ What¤%cha¤ do¤in'?¤" +
-                                  " Who¤ ya¤ screw¤in'?¤% What¤cha¤ drink¤in?¤ What¤cha¤ think¤in'?" +
-                                  "###¤ (Hey¤ ba¤by!)¤ Say¤ my¤ name#% Play¤ your¤ game# Wan¤na¤ do¤ me?" +
-                                  "¤% Wan¤na¤ screw¤ me?¤ I'm¤ your¤ pet#% Make¤ me¤ wet" +
-                                  "###¤% (Hey,¤ ba¤by?)¤ Don't¤ ya¤ stare# I¤ don't¤% care#% Want¤ some¤ fun?" +
-                                  "# Make¤ me¤ cum# Keep¤ it¤ go¤in'¤% Cause% it's¤% snow¤in'" +
-                                  "###% (Hey,¤ ba¤by?!)¤ Tie¤ me¤ up#% Pin¤ me¤ down#% Flip¤ me¤ o¤ver¤" +
-                                  " Up¤side¤ down#% Make¤ me¤ make¤ that¤ fuck¤in'¤ sound";
+                    " Who¤ ya¤ screw¤in'?¤% What¤cha¤ drink¤in?¤ What¤cha¤ think¤in'?" +
+                    "###¤ (Hey¤ ba¤by!)¤ Say¤ my¤ name#% Play¤ your¤ game# Wan¤na¤ do¤ me?" +
+                    "¤% Wan¤na¤ screw¤ me?¤ I'm¤ your¤ pet#% Make¤ me¤ wet" +
+                    "###¤% (Hey,¤ ba¤by?)¤ Don't¤ ya¤ stare# I¤ don't¤% care#% Want¤ some¤ fun?" +
+                    "# Make¤ me¤ cum# Keep¤ it¤ go¤in'¤% Cause% it's¤% snow¤in'" +
+                    "###% (Hey,¤ ba¤by?!)¤ Tie¤ me¤ up#% Pin¤ me¤ down#% Flip¤ me¤ o¤ver¤" +
+                    " Up¤side¤ down#% Make¤ me¤ make¤ that¤ fuck¤in'¤ sound";
 
                 window.beats.addLyricsCallback(318,
                     verseLyrics + verseLyrics + verseLyrics,
                     function(text) {
                         var element = document.getElementById("lyrics-container");
                         element.innerHTML += text;
-                });
+                    });
 
                 window.beats.addBeatCallback(320, function() {
                     var element = document.getElementById("scene-6");
@@ -213,7 +214,7 @@
                             window.beats.track.playbackRate += 0.05;
                             break;
                         case 40: // Down
-                        window.beats.track.playbackRate -= 0.05;
+                            window.beats.track.playbackRate -= 0.05;
                             break;
                         default:
                             break;
