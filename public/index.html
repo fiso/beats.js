@@ -67,10 +67,6 @@
             element.style["width"] = window.innerWidth + "px";
             element.style["height"] = window.innerHeight + "px";
 
-            document.addEventListener("click", function(event) {
-                togglePlayback();
-            });
-
             window.beats = new Beats("/audio/track.mp3", 0.2);
             //window.beats = new Beats("/audio/track2.mp3", 13.4, 150);
 
@@ -183,6 +179,10 @@
                         clearInterval(strobeInterval);
                         strobeInterval = -1;
                     }
+                });
+
+                document.addEventListener("click", function(event) {
+                    togglePlayback();
                 });
 
                 window.addEventListener("keydown", function(event) {
