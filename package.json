@@ -1,6 +1,6 @@
 {
   "name": "beats.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A beat detection and synchronization library",
   "babel": {
     "presets": [
