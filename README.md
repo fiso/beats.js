@@ -14,7 +14,7 @@ Basic usage, load an audio file and attempt to autodetect BPM:
 ```
 
 You can also pass an options object that can contain the following fields.
-|||
+|Parameter|Description|
 |--------------:|:--------------|
 | audioUrl      | URL to the audio file to be loaded. Supported formats are going to be whatever the browsers `<Audio>` tag supports.
 | bpm           | If beats is unable to autodetect the BPM correctly, you can pass a value here instead and it will not attempt autodetection.
