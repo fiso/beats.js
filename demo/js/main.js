@@ -1,6 +1,6 @@
 (function () {
-  const hervoice = {audioUrl: '/audio/track2.mp3', offset: 13.4, bpm: 150};
-  const heybaby = {audioUrl: '/audio/track.mp3', offset: .28};
+  const hervoice = {audioUrl: 'audio/track2.mp3', offset: 13.4, bpm: 150};
+  const heybaby = {audioUrl: 'audio/track.mp3', offset: .28};
   let music = null;
   window.beats.beatSync(heybaby).then((_music) => {
     music = _music;
