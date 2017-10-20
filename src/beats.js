@@ -83,7 +83,7 @@ class Beats {
     }
   }
 
-  addLyricsCallback (beat, lyrics, callback, offset) {
+  addLyricsCallback (beat, lyrics, callback, offset = 0) {
     beat -= 1;
     lyrics = `#${lyrics}`;
     const tokens = '#¤%&';
