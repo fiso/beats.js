@@ -15,6 +15,22 @@ body {
     display: block;
 }
 
+#clickme {
+  cursor: pointer;
+  width: 100vw;
+  height: 100vh;
+  font-size: 12vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10vw;
+  box-sizing: border-box;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Anton;
+  line-height: 1em;
+}
+
 #timeline {
   position: fixed;
   bottom: 0;
@@ -35,6 +51,7 @@ body {
   box-sizing: border-box;
   width: 100vw;
   height: 100vh;
+  pointer-events: none;
 }
 
 #flasher {

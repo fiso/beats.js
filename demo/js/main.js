@@ -1,10 +1,19 @@
+console.log('main');
 (function () {
   const hervoice = {audioUrl: 'audio/track2.mp3', offset: 13.4, bpm: 150};
   const heybaby = {audioUrl: 'audio/track.mp3', offset: .28};
   let music = null;
-  window.beats.beatSync(heybaby).then((_music) => {
-    music = _music;
-    window.heybaby(_music);
+
+  document.querySelector('#clickme').addEventListener('click', () => {
+    document.querySelector('#clickme').innerHTML = 'Loading...';
+    window.beats.beatSync(heybaby).then((_music) => {
+      document.querySelector('#clickme').remove();
+      music = _music;
+      window.heybaby(_music);
+      document.addEventListener('click', (event) => {
+        togglePlayback();
+      });
+    });
   });
 
   function togglePlayback () {
@@ -14,10 +23,6 @@
       music.track.pause();
     }
   }
-
-  document.addEventListener('click', (event) => {
-    togglePlayback();
-  });
 
   let total = 0;
   let count = 0;
