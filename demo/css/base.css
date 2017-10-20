@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial;
+}
+
+body {
+    background-color: black;
+    color: white;
+    overflow: hidden;
+    font-family: 'Anton', sans-serif;
+}
+
+#debug {
+    display: block;
+}
+
+#timeline {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  height: 1vh;
+  background-color: rgba(40, 20, 20, .8);
+  will-change: transform;
+}
+
+#animation-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: transform 0.5s ease-in-out;
+  box-sizing: border-box;
+  width: 100vw;
+  height: 100vh;
+}
+
+#flasher {
+    width: 100%;
+    height: 100%;
+}
+
+#flasher.beat-on {
+  background-color: #444;
+}
+
+#lyrics-container-small {
+    position: absolute;
+    top: 5vw;
+    left: 5vw;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 100ms ease-in-out, transform 200ms ease-in-out;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: -.03em;
+    font-size: 6vw;
+    transform: rotate(-15deg) scale(1.5);
+}
+
+#lyrics-container-small.on {
+    opacity: 1;
+    transition: none;
+    transform: rotate(-45deg);
+}
+
+#lyrics-container {
+    width: 100%;
+    text-align: center;
+    font-size: 28vw;
+    top: 0;
+    position: absolute;
+    line-height: 100vh;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 300ms linear;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: -.03em;
+}
+
+#lyrics-container.on {
+    opacity: 1;
+    transition: none;
+}
+
+.scene-container {
+  display: none;
+  width: 100px;
+  height: 100px;
+  background-color: green;
+  vertical-align: top;
+  box-sizing: border-box;
+  padding: 10px;
+}
