@@ -34,3 +34,5 @@ syncing.
 | getCurrentBeatFloat       |                                                    | Returns the current active beat as a float.
 | getTimePerBeat            |                                                    | Returns the duration of a single beat, in seconds.
 | getTimeToNearestBeat      |                                                    | Returns the time to the closest beat right now. Can be either negative or positive, depending on whether or not the closest beat is forward of backward in time. Useful when syncing.
+
+See the demos inside the repo for further usage examples.
