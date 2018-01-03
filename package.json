@@ -14,6 +14,7 @@
   "author": "Filip Haglund",
   "license": "ISC",
   "devDependencies": {},
+  "repository": "https://github.com/fiso/beats.js",
   "dependencies": {
     "babel-cli": "^6.26.0",
     "babel-loader": "^7.1.2",
