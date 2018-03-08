@@ -290,3 +290,5 @@ export function beatSync (options) {
     });
   }
 }
+
+export default beatSync;
