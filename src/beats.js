@@ -290,7 +290,3 @@ export function beatSync (options) {
     });
   }
 }
-
-window.beats = {
-  beatSync,
-};
