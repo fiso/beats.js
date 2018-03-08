@@ -4,7 +4,7 @@ const webpack = require('webpack');
 module.exports = {
   entry: './src/beats.js',
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'lib'),
     filename: 'beats.bundle.js',
     pathinfo: true,
   },

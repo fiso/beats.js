@@ -2,6 +2,7 @@
   "name": "beats.js",
   "version": "0.2.1",
   "description": "A beat detection and synchronization library",
+  "main": "lib/index.js",
   "babel": {
     "presets": [
       "env"

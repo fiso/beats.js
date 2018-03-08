@@ -273,7 +273,7 @@ function analyzeBpm (audioUrl, bpm, offset) {
   });
 }
 
-function beatSync (options) {
+export function beatSync (options) {
   const [audioUrl, bpm, offset] = select(options, (options) => {
     if (typeof options === String) {
       return [options, 0, 0];
@@ -292,9 +292,5 @@ function beatSync (options) {
 }
 
 window.beats = {
-  beatSync,
-};
-
-module.exports = {
   beatSync,
 };
