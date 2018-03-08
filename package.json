@@ -2,7 +2,7 @@
   "name": "beats.js",
   "version": "0.3.0",
   "description": "A beat detection and synchronization library",
-  "main": "lib/index.js",
+  "main": "lib/beats.bundle.js",
   "babel": {
     "presets": [
       "env"
