@@ -5,8 +5,10 @@ module.exports = {
   entry: './src/beats.js',
   output: {
     path: path.resolve(__dirname, 'lib'),
-    filename: 'beats.bundle.js',
+    filename: 'beats.js',
     pathinfo: true,
+    library: 'beats.js',
+    libraryTarget: 'umd',
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin(),
