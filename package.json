@@ -1,6 +1,6 @@
 {
   "name": "beats.js",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "A beat detection and synchronization library",
   "main": "lib/beats.bundle.js",
   "babel": {
