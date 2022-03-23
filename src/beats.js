@@ -20,47 +20,6 @@ class Beats {
     this.track.play();
   }
 
-  _audioPoll () {
-    window.requestAnimationFrame(this._boundPoll);
-
-    if (this.track.readyState !== 4) {
-      return;
-    }
-
-    const currentBeat = this.getCurrentBeat();
-    if (this.lastBeat !== currentBeat) {
-      this.everyBeatCallbacks.forEach(function (callback) {
-        callback(currentBeat);
-      });
-
-      if (this.oneshotCallbacks[currentBeat]) {
-        this.oneshotCallbacks[currentBeat].forEach(function (callback) {
-          callback(currentBeat);
-        });
-        delete this.oneshotCallbacks[currentBeat];
-      }
-
-      if (this.beatCallbacks[currentBeat]) {
-        this.beatCallbacks[currentBeat].forEach(function (callback) {
-          callback(currentBeat);
-        });
-      }
-
-      this.lastBeat = currentBeat;
-    }
-
-    const currentFractionalBeat = this.getCurrentBeatFloat();
-    while (this.fractionalBeatCallbacks.length > 0) {
-      if (currentFractionalBeat < this.fractionalBeatCallbacks[0].beat) {
-        break;
-      }
-
-      const callback = this.fractionalBeatCallbacks.shift();
-      callback.callback(callback.data);
-    }
-    this.lastFractionalBeat = currentFractionalBeat;
-  }
-
   getCurrentBeatFloat () {
     const time = this.track.currentTime - this.offset;
     return time / this.getTimePerBeat();
@@ -143,6 +102,47 @@ class Beats {
     }
 
     this.oneshotCallbacks[beatNumber].push(callback);
+  }
+
+  _audioPoll () {
+    window.requestAnimationFrame(this._boundPoll);
+
+    if (this.track.readyState !== 4) {
+      return;
+    }
+
+    const currentBeat = this.getCurrentBeat();
+    if (this.lastBeat !== currentBeat) {
+      this.everyBeatCallbacks.forEach(function (callback) {
+        callback(currentBeat);
+      });
+
+      if (this.oneshotCallbacks[currentBeat]) {
+        this.oneshotCallbacks[currentBeat].forEach(function (callback) {
+          callback(currentBeat);
+        });
+        delete this.oneshotCallbacks[currentBeat];
+      }
+
+      if (this.beatCallbacks[currentBeat]) {
+        this.beatCallbacks[currentBeat].forEach(function (callback) {
+          callback(currentBeat);
+        });
+      }
+
+      this.lastBeat = currentBeat;
+    }
+
+    const currentFractionalBeat = this.getCurrentBeatFloat();
+    while (this.fractionalBeatCallbacks.length > 0) {
+      if (currentFractionalBeat < this.fractionalBeatCallbacks[0].beat) {
+        break;
+      }
+
+      const callback = this.fractionalBeatCallbacks.shift();
+      callback.callback(callback.data);
+    }
+    this.lastFractionalBeat = currentFractionalBeat;
   }
 }
 
